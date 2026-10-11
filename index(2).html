@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carta de recurso de visto negado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fundo:#E8EDF2;
+    --papel:#FFFFFF;
+    --tinta:#14283F;
+    --suave:#5A6B7E;
+    --linha:#C9D3DD;
+    --acao:#A8201A;
+    --acao-escura:#86170F;
+    --aviso:#F2C94C;
+    --ok:#1F6B4A;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--fundo);color:var(--tinta);font:400 16px/1.55 "Public Sans",system-ui,sans-serif}
+  main{max-width:720px;margin:0 auto;padding:20px 16px 80px}
+  h1,h2{font-family:"Newsreader",Georgia,serif;line-height:1.15;margin:0}
+  h1{font-size:clamp(30px,8vw,44px);font-weight:700;letter-spacing:-.01em}
+  h2{font-size:22px;font-weight:700;margin-bottom:12px}
+  .intro{color:var(--suave);margin:10px 0 0;max-width:52ch}
+
+  /* Contador de prazo: o elemento de destaque da página */
+  .prazo{margin:24px 0 8px;background:var(--tinta);color:#fff;border-radius:6px;padding:18px 20px;display:flex;gap:18px;align-items:center}
+  .prazo .num{font:700 56px/1 "Newsreader",Georgia,serif;min-width:72px;text-align:center;color:var(--aviso)}
+  .prazo .txt{font-size:15px}
+  .prazo .txt strong{display:block;font-size:17px;margin-bottom:2px}
+  .prazo.fora .num{color:#FF9C94}
+
+  form{background:var(--papel);border:1px solid var(--linha);border-radius:6px;padding:20px 18px;margin-top:20px}
+  fieldset{border:0;padding:0;margin:0 0 26px}
+  legend{font:700 20px/1.2 "Newsreader",Georgia,serif;padding:0;margin-bottom:12px}
+  label{display:block;font-weight:500;font-size:14px;margin:12px 0 4px}
+  input[type=text],input[type=date],select,textarea{width:100%;font:inherit;color:inherit;padding:11px 12px;border:1px solid var(--linha);border-radius:4px;background:#fff}
+  textarea{min-height:84px;resize:vertical}
+  input:focus,select:focus,textarea:focus,button:focus-visible,.motivo input:focus-visible{outline:3px solid var(--aviso);outline-offset:1px}
+  .duas{display:grid;gap:0 12px}
+  @media(min-width:560px){.duas{grid-template-columns:1fr 1fr}}
+  .ajuda{font-size:13px;color:var(--suave);margin:4px 0 0}
+
+  .motivo{border:1px solid var(--linha);border-radius:4px;margin-bottom:8px}
+  .motivo > label{display:flex;gap:10px;align-items:flex-start;margin:0;padding:12px;font-weight:500;cursor:pointer}
+  .motivo input[type=checkbox]{margin-top:4px;width:18px;height:18px;flex:none;accent-color:var(--acao)}
+  .motivo .extra{display:none;padding:0 12px 12px 40px}
+  .motivo.on{border-color:var(--tinta);background:#F5F8FB}
+  .motivo.on .extra{display:block}
+  .motivo .extra label{margin-top:0}
+
+  .botao{display:inline-block;width:100%;border:0;border-radius:4px;background:var(--acao);color:#fff;font:600 17px/1 "Public Sans",sans-serif;padding:16px;cursor:pointer;text-align:center;text-decoration:none}
+  .botao:hover{background:var(--acao-escura)}
+  .botao.sec{background:transparent;color:var(--tinta);border:2px solid var(--tinta)}
+  .botao.sec:hover{background:var(--tinta);color:#fff}
+  .acoes{display:grid;gap:10px;margin-top:16px}
+  @media(min-width:560px){.acoes.tres{grid-template-columns:1fr 1fr}}
+
+  #resultado{display:none;margin-top:28px}
+  .folha{background:var(--papel);border:1px solid var(--linha);border-radius:2px;padding:28px 22px;font:400 15.5px/1.7 "Newsreader",Georgia,serif;position:relative;overflow:hidden}
+  .folha p{margin:0 0 14px}
+  .folha .dir{text-align:right}
+  .folha .assunto{font-weight:700}
+  .folha [contenteditable]:focus{outline:none}
+  .folha.bloqueada{max-height:420px;user-select:none}
+  .folha.bloqueada::after{content:"";position:absolute;left:0;right:0;bottom:0;height:220px;background:linear-gradient(to bottom,rgba(255,255,255,0),#fff 85%)}
+  .pagar{margin-top:16px;border:2px solid var(--tinta);border-radius:6px;padding:18px;background:#fff}
+  .pagar h2{font-size:20px;margin-bottom:6px}
+  .pagar p{margin:0 0 14px;color:var(--suave)}
+  .aviso{margin-top:24px;font-size:13px;color:var(--suave);border-left:4px solid var(--aviso);padding:4px 0 4px 12px}
+  .estado{margin-top:10px;font-size:14px;color:var(--ok);min-height:20px}
+
+  @media print{
+    body{background:#fff}
+    main > *:not(#resultado){display:none!important}
+    #resultado > *:not(.folha){display:none!important}
+    .folha{border:0;padding:0;font-size:12pt}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Carta de recurso para visto negado</h1>
+  <p class="intro">Responda às perguntas, escolha o motivo da recusa e receba uma carta formal em português de Portugal, pronta para enviar.</p>
+
+  <div class="prazo" id="prazo">
+    <div class="num" id="prazoNum">30</div>
+    <div class="txt"><strong id="prazoTitulo">Prazo para recorrer: 30 dias</strong><span id="prazoTexto">Indique a data em que recebeu a recusa para ver quantos dias lhe restam.</span></div>
+  </div>
+
+  <form id="form" autocomplete="off">
+    <fieldset>
+      <legend>Os seus dados</legend>
+      <label for="nome">Nome completo (como no passaporte)</label>
+      <input type="text" id="nome" required>
+      <div class="duas">
+        <div><label for="nasc">Data de nascimento</label><input type="date" id="nasc"></div>
+        <div><label for="nac">Nacionalidade</label><input type="text" id="nac" value="angolana"></div>
+      </div>
+      <div class="duas">
+        <div><label for="pass">N.º do passaporte</label><input type="text" id="pass"></div>
+        <div><label for="morada">Cidade onde vive</label><input type="text" id="morada" placeholder="Luanda"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>O pedido de visto</legend>
+      <label for="tipo">Tipo de visto pedido</label>
+      <select id="tipo">
+        <option>visto de estudo</option>
+        <option>visto de formação profissional</option>
+        <option>visto de trabalho</option>
+        <option>visto de turismo / curta duração</option>
+        <option>visto de reagrupamento familiar</option>
+        <option>visto de residência</option>
+        <option>visto de procura de trabalho qualificado</option>
+      </select>
+      <label for="entidade">Para quem enviar a carta</label>
+      <input type="text" id="entidade" value="Consulado Geral de Portugal em Luanda">
+      <p class="ajuda">Confirme na carta de recusa a quem deve dirigir o recurso.</p>
+      <div class="duas">
+        <div><label for="dataRecusa">Data em que recebeu a recusa</label><input type="date" id="dataRecusa"></div>
+        <div><label for="proc">N.º do processo (se tiver)</label><input type="text" id="proc"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Qual foi o motivo da recusa?</legend>
+      <p class="ajuda" style="margin:-4px 0 10px">Marque o que está escrito na sua carta de recusa. Pode marcar vários.</p>
+      <div id="motivos"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Mais alguma coisa a dizer?</legend>
+      <label for="geral">Explicação geral ou factos novos (opcional)</label>
+      <textarea id="geral" placeholder="Ex.: Tenho emprego fixo há 5 anos, família em Luanda, e já viajei antes e regressei sempre dentro do prazo."></textarea>
+    </fieldset>
+
+    <button type="submit" class="botao">Gerar a minha carta</button>
+  </form>
+
+  <section id="resultado" aria-live="polite">
+    <h2>A sua carta</h2>
+    <div class="folha" id="folha"></div>
+
+    <div class="pagar" id="pagar">
+      <h2>Receba a carta completa</h2>
+      <p>Pague <span id="preco"></span> e enviamos o código para desbloquear, copiar e imprimir a carta inteira.</p>
+      <a class="botao" id="btnPagar" href="#" target="_blank" rel="noopener">Pedir a carta completa no WhatsApp</a>
+    </div>
+
+    <div class="acoes tres" id="acoes" style="display:none">
+      <button class="botao" id="btnCopiar" type="button">Copiar carta</button>
+      <button class="botao sec" id="btnImprimir" type="button">Imprimir ou guardar PDF</button>
+    </div>
+    <div class="estado" id="estado"></div>
+    <p class="aviso" id="avisoLegal">Esta carta é um modelo de apoio e não substitui um advogado. Não garante a aprovação do visto. Confirme o prazo e a entidade na sua carta de recusa e anexe documentos que provem o que escreve.</p>
+  </section>
+</main>
+
+<script>
+/* ====== CONFIGURAÇÃO: mude aqui ====== */
+const CFG = {
+  whatsapp: "244941373971",   // número com indicativo, sem + nem espaços
+  preco: "20.000 Kz",
+  codigo: "VISTO2026",        // código que o cliente recebe depois de pagar (link: ?c=VISTO2026)
+  prazoDias: 30,
+  usoProprio: true,           // true = tudo desbloqueado, sem pagamento (ferramenta só para si)
+  paragrafosVisiveis: 4       // quantos blocos aparecem antes de pagar
+};
+/* ===================================== */
+
+const MOTIVOS = [
+  { id:"meios", titulo:"Meios de subsistência insuficientes",
+    dica:"Quanto tem na conta, de onde vem o dinheiro, quem paga a viagem.",
+    texto:"Quanto à alegada insuficiência de meios de subsistência, junto comprovativos que demonstram que disponho de recursos financeiros adequados para custear a minha estadia e o regresso ao país de origem, nomeadamente extratos bancários e prova de rendimentos regulares. Os meios apresentados são suficientes para o período e o fim da estadia pretendida." },
+  { id:"alojamento", titulo:"Falta de comprovativo de alojamento",
+    dica:"Onde vai ficar: reserva, contrato, termo de responsabilidade de familiar.",
+    texto:"No que respeita ao alojamento, junto documentação que comprova onde ficarei instalado(a) durante a estadia em Portugal, incluindo os elementos necessários para a sua verificação. Mantenho a total disponibilidade para prestar qualquer esclarecimento adicional." },
+  { id:"finalidade", titulo:"Dúvidas sobre o objetivo ou as condições da estadia",
+    dica:"Explique o curso, a formação, o trabalho ou a viagem e anexe a prova.",
+    texto:"O objetivo e as condições da estadia foram indicados com clareza no pedido e encontram-se documentados. Junto os elementos que comprovam a finalidade da viagem, demonstrando que o pedido é genuíno e coerente com o meu percurso pessoal e profissional." },
+  { id:"lacos", titulo:"Risco de não regressar ao país de origem",
+    dica:"Emprego, família, casa, estudos, viagens anteriores sem problemas.",
+    texto:"Não existe qualquer risco de permanência ilegal ou de não regresso. Mantenho em Angola laços sólidos de natureza profissional, familiar e social, que constituem razão determinante para o meu regresso no termo da estadia, conforme documentação que anexo." },
+  { id:"docs", titulo:"Documentos incompletos ou que não foi possível verificar",
+    dica:"Diga que documento faltou ou deu dúvida e anexe a versão correta.",
+    texto:"Os documentos apresentados são autênticos e verificáveis. Se algum elemento foi considerado insuficiente ou de difícil verificação, junto agora os documentos complementares e coloco-me à disposição para a sua confirmação junto das entidades emissoras." },
+  { id:"seguro", titulo:"Seguro de viagem em falta ou inadequado",
+    dica:"Número da apólice, seguradora e período de cobertura.",
+    texto:"Quanto ao seguro de viagem, junto apólice válida que cobre todo o período da estadia e as despesas médicas exigidas, ficando assim sanada qualquer deficiência apontada." },
+  { id:"fundamentacao", titulo:"A recusa não explica bem o motivo",
+    dica:"Use se a carta de recusa for vaga ou só tiver uma cruz num formulário.",
+    texto:"A decisão não indica de forma clara e suficiente os fundamentos de facto e de direito que a sustentam, o que viola o dever de fundamentação previsto nos artigos 152.º e 153.º do Código do Procedimento Administrativo e dificulta o exercício efetivo do meu direito de defesa. Requer-se, por isso, que sejam esclarecidos os fundamentos concretos da recusa." },
+  { id:"outro", titulo:"Outro motivo",
+    dica:"Escreva o motivo que consta na sua carta.",
+    texto:"Relativamente ao motivo indicado na decisão de recusa, apresento os esclarecimentos e a documentação que passo a expor." }
+];
+
+const $ = id => document.getElementById(id);
+const fmt = d => new Date(d + "T00:00:00").toLocaleDateString("pt-PT",{day:"numeric",month:"long",year:"numeric"});
+const hoje = () => new Date().toLocaleDateString("pt-PT",{day:"numeric",month:"long",year:"numeric"});
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const desbloqueado = CFG.usoProprio || new URLSearchParams(location.search).get("c") === CFG.codigo;
+
+/* Motivos */
+$("motivos").innerHTML = MOTIVOS.map(m => `
+  <div class="motivo" id="m-${m.id}">
+    <label><input type="checkbox" value="${m.id}"><span>${m.titulo}</span></label>
+    <div class="extra">
+      <label for="d-${m.id}">${m.dica}</label>
+      <textarea id="d-${m.id}" placeholder="Escreva aqui os detalhes (opcional)"></textarea>
+    </div>
+  </div>`).join("");
+document.querySelectorAll(".motivo input[type=checkbox]").forEach(cb =>
+  cb.addEventListener("change", () => $("m-" + cb.value).classList.toggle("on", cb.checked)));
+
+/* Contador de prazo */
+function atualizarPrazo(){
+  const v = $("dataRecusa").value;
+  if(!v) return;
+  const dias = Math.floor((new Date() - new Date(v + "T00:00:00")) / 86400000);
+  const resta = CFG.prazoDias - dias;
+  const caixa = $("prazo");
+  if(resta >= 0){
+    caixa.classList.remove("fora");
+    $("prazoNum").textContent = resta;
+    $("prazoTitulo").textContent = resta === 1 ? "Resta 1 dia para recorrer" : `Restam ${resta} dias para recorrer`;
+    $("prazoTexto").textContent = resta <= 7 ? "O prazo está quase a acabar. Envie o recurso o quanto antes." : "Conte o prazo a partir da data em que recebeu a decisão.";
+  } else {
+    caixa.classList.add("fora");
+    $("prazoNum").textContent = "0";
+    $("prazoTitulo").textContent = "O prazo de " + CFG.prazoDias + " dias parece ter passado";
+    $("prazoTexto").textContent = "Confirme na sua carta de recusa. Se já passou, pode ser melhor fazer um novo pedido bem instruído.";
+  }
+}
+$("dataRecusa").addEventListener("change", atualizarPrazo);
+
+/* Gerar carta */
+function gerarCarta(){
+  const nome = $("nome").value.trim() || "[NOME COMPLETO]";
+  const nasc = $("nasc").value ? ", nascido(a) em " + fmt($("nasc").value) : "";
+  const nac = $("nac").value.trim();
+  const pass = $("pass").value.trim() ? ", titular do passaporte n.º " + $("pass").value.trim() : "";
+  const cidade = $("morada").value.trim();
+  const tipo = $("tipo").value;
+  const entidade = $("entidade").value.trim() || "[ENTIDADE]";
+  const proc = $("proc").value.trim() ? " (processo n.º " + $("proc").value.trim() + ")" : "";
+  const dataRec = $("dataRecusa").value ? "notificada em " + fmt($("dataRecusa").value) : "que me foi recentemente notificada";
+  const marcados = [...document.querySelectorAll(".motivo input:checked")].map(c => MOTIVOS.find(m => m.id === c.value));
+  const geral = $("geral").value.trim();
+
+  const P = [];
+  P.push({c:"dir", t:`${cidade ? esc(cidade) + ", " : ""}${hoje()}`});
+  P.push({c:"", t:`Exmo(a). Senhor(a)<br>${esc(entidade)}`});
+  P.push({c:"assunto", t:`Assunto: Recurso da decisão de recusa de ${esc(tipo)}${esc(proc)}`});
+  P.push({c:"", t:`${esc(nome)}, de nacionalidade ${esc(nac)}${nasc}${esc(pass)}, vem, respeitosamente, interpor recurso da decisão de indeferimento do pedido de ${esc(tipo)}, ${dataRec}, pelos fundamentos que a seguir expõe.`});
+  P.push({c:"", t:`<strong>1. Da tempestividade.</strong> O presente recurso é apresentado dentro do prazo legal aplicável, pelo que deve ser admitido e apreciado.`});
+
+  if(marcados.length){
+    P.push({c:"", t:`<strong>2. Dos fundamentos.</strong>`});
+    marcados.forEach(m => {
+      const det = $("d-" + m.id).value.trim();
+      P.push({c:"", t:esc(m.texto) + (det ? " " + esc(det) : "")});
+    });
+  } else {
+    P.push({c:"", t:`<strong>2. Dos fundamentos.</strong> Discordo da decisão proferida, por entender que o meu pedido preenche os requisitos legais exigidos para a concessão do visto.`});
+  }
+
+  if(geral){
+    P.push({c:"", t:`<strong>3. Esclarecimentos adicionais.</strong> ${esc(geral)}`});
+  }
+  P.push({c:"", t:`<strong>${geral ? "4" : "3"}. Do pedido.</strong> Face ao exposto, requer-se a reapreciação do pedido e a revogação da decisão de recusa, com a consequente concessão do visto solicitado. Caso assim não se entenda, requer-se que sejam esclarecidos, de forma completa, os fundamentos da decisão.`});
+  P.push({c:"", t:`<strong>Anexos:</strong> cópia da decisão de recusa; cópia do passaporte; e os documentos que comprovam os factos acima descritos.`});
+  P.push({c:"", t:`Pede deferimento,`});
+  P.push({c:"", t:`<br>______________________________<br>${esc(nome)}`});
+  return P;
+}
+
+function mostrar(P){
+  const bloquear = !desbloqueado;
+  const lista = bloquear ? P.slice(0, CFG.paragrafosVisiveis).concat(P.slice(CFG.paragrafosVisiveis)) : P;
+  const f = $("folha");
+  f.innerHTML = lista.map(p => `<p class="${p.c}">${p.t}</p>`).join("");
+  f.classList.toggle("bloqueada", bloquear);
+  f.contentEditable = bloquear ? "false" : "true";
+  $("pagar").style.display = bloquear ? "block" : "none";
+  $("acoes").style.display = bloquear ? "none" : "grid";
+  $("preco").textContent = CFG.preco;
+  const nome = $("nome").value.trim() || "cliente";
+  const msg = `Olá! Quero a carta de recurso de visto completa (${CFG.preco}). Nome: ${nome}. Tipo de visto: ${$("tipo").value}.`;
+  $("btnPagar").href = `https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(msg)}`;
+  $("resultado").style.display = "block";
+  $("resultado").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth"});
+}
+
+$("form").addEventListener("submit", e => {
+  e.preventDefault();
+  mostrar(gerarCarta());
+});
+
+$("btnCopiar").addEventListener("click", async () => {
+  try{
+    await navigator.clipboard.writeText($("folha").innerText);
+    $("estado").textContent = "Carta copiada.";
+  }catch{
+    $("estado").textContent = "Não foi possível copiar. Selecione o texto e copie manualmente.";
+  }
+});
+$("btnImprimir").addEventListener("click", () => window.print());
+</script>
+</body>
+</html>
